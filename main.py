@@ -19,7 +19,7 @@ if __name__ == "__main__":
     
     n_stock = get_n_stock(t_calibrate)
     #get stock numbers for t_calibrate
-    
+
     paras = sc.optimize.curve_fit(ode_model, xdata = t_calibrate, ydata = nitrate_calibrate,p0 = ?)
     [b_1, b_2, b_3, tau, alpha] = paras
     #? is intial guess
@@ -29,3 +29,15 @@ if __name__ == "__main__":
     
     # 4. Plot numeric solution and actual data
 
+    #plot data predicted by model
+    plt.plot(t,nitrate_conc_num,label="Modelled")
+    #plot measured data
+    plt.plot(t_calibrate, nitrate_calibrate, label="Experimental")
+
+    #label graph
+    plt.xlabel('time (yrs)')
+    plt.ylabel('nitrate concentration (mg/L)')
+    plt.title('Experimental vs Modelled Nitrate Concentration for Southland Aquifer')
+
+    plt.show()
+    
