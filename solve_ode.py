@@ -66,31 +66,21 @@ def ode_model(t, C, P, n_stock, m_0, t_c, t_mar, P_surface, P_a, P_mar, b_1, b_2
     return dCdt, dPdt
     
 
-def solve_ode(f, b_1, b_2, b_3, tau, alpha):
-    ''' Solve an ODE numerically.
+def get_nitrate_concentration(t, b_1, b_2, b_3, tau, alpha):
+    ''' Get numeric estimation of the nitrate concentration for a certain year
         Parameters:
         -----------
-        f : callable
-            Function that returns dxdt given variable and parameter inputs.
-        t0 : float
-            Initial time of solution.
-        t1 : float
-            Final time of solution.
-        dt : float
-            Time step length.
-        x0 : float
-            Initial value of solution.
-        pars : array-like
-            List of parameters passed to ODE function f.
+        t : float
+            Time at which to evaluate solution.
+        b_1, b_2, b_3, tau, alpha : float
+            Parameters/constants.
         Returns:
         --------
-        t : array-like
-            Independent variable solution vector.
-        x : array-like
-            Dependent variable solution vector.
+        x : float
+            Estimated nitrate concentration for the year.
     '''
     t0 = 1980
-    t1 = 2019.46
+    t1 = t
     dt = 1
     x0 = [0.2, ?] # [initial nitrate concentration, initial pressure]
 
@@ -102,7 +92,7 @@ def solve_ode(f, b_1, b_2, b_3, tau, alpha):
     n = get_n_stock(t)
 
     for i in range(steps):
-        f0 = f(t[i], *x[i], n, m_0=?, t_c=2010, t_mar=2020, P_surface=?, P_mar=0, 
+        f0 = ode_model(t[i], *x[i], n, m_0=?, t_c=2010, t_mar=2020, P_surface=?, P_mar=0, 
             b_1=b_1, 
             b_2=b_2,
             b_3=b_3,
@@ -111,7 +101,7 @@ def solve_ode(f, b_1, b_2, b_3, tau, alpha):
         )
 
         x1 = x[i] + dt * f0
-        f1 = f(t[i + 1], x1, n, m_0=?, t_c=2010, t_mar=2020, P_surface=?, P_mar=0, 
+        f1 = ode_model(t[i + 1], x1, n, m_0=?, t_c=2010, t_mar=2020, P_surface=?, P_mar=0, 
             b_1=b_1, 
             b_2=b_2,
             b_3=b_3,
@@ -122,4 +112,4 @@ def solve_ode(f, b_1, b_2, b_3, tau, alpha):
         f2 = (f0 + f1) / 2
         x[i + 1] = x[i] + dt * f2
     
-    return t, x
+    return x[-1]
